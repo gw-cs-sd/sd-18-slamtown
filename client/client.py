@@ -3,7 +3,8 @@
 import socket                   # Import socket module
 
 s = socket.socket()             # Create a socket object
-host = socket.gethostname()     # Get local machine name
+#host = socket.gethostname()     # Get local machine name
+host = ''		#this address is not finalized. setup up server then finalize // desktop: 192.168.0.107 // tenda router 192.168.0.113
 port = 60000                    # Reserve a port for your service.
 
 s.connect((host, port))
