@@ -1,0 +1,7 @@
+add_subdirectory(3DSensor)
+add_subdirectory(ThermalSensor)
+add_subdirectory(SensorFusion)
+add_subdirectory(ImageProcessing)
+add_subdirectory(KeyPatch)
+add_subdirectory(MessagePassing)
+add_subdirectory(cxxopts)
