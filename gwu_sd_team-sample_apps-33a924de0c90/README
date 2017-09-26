@@ -1,0 +1,35 @@
+-------------------------------------------------------------------------------
+#Current Apps:# 
+-------------------------------------------------------------------------------
+
+## 1. live_capture ##
+Simple example of live stream of depth and RGB image from sensor like kinect.
+
+## 2. live_plant_segmentation ##
+Simple example of live plant separation for background, by color tresholding. 
+And basic segmentation process.
+
+## 3. live_adv_plant_segmentation ##
+Advanced plant segmentation using color tresholding for background separation and then more advance segmentation tools such as: euclidian clustering, region growing, or supervoxels.
+
+## 4. live_segmentation ##
+PCL example of live plan segmentation, curvature computation, and normals computation.
+
+## 5. network_communication ##
+A simple client-server example application over the network, using TCP packages.
+
+## 6. IR_streamer ##
+Client-server application for small size video streaming.
+
+-------------------------------------------------------------------------------
+# Compilation
+-------------------------------------------------------------------------------
+1) Create build folder
+mkdir build
+cd build
+
+2) Generate the make file
+ccmake ..
+
+3) Compile (or from Qt)
+make

@@ -1,0 +1,48 @@
+##############################################################
+##                Lepton IR video stramer                   ##
+##                   for Raspberry PI                       ##
+##                                                          ##
+##                 Andrei Claudiu Cosma                     ##
+##############################################################
+
+
+### Dependencies:
+1. SPI Enable
+2. I2C enable
+
+
+### Tested platform:
+1. Raspberry PI model B.
+2. OS Raspbian.
+
+
+### Build:
+Step 1. In order to build this example, you'll have to first build the Lepton SDK binary.
+Thsi will allow you to issue commands to the lepton over I2C, such as performing flat-field calibration. 
+To do this:
+> cd into ./IR_raspberry_server/LeptonSDKEmb32PUB
+> run the command make
+
+Step 2. In order to build the Lepton IR video streamer, do the follwoing:
+> cd into the IR_raspberry_server
+> runt the command make all
+
+
+### Run:
+Step 1. To run the video streamer server, please make sure that all the wires are properly connected: 
+	Lepton's GND pin should be connected to RasPi's ground.
+	Lepton's CS pin should be connected to RasPi's CE1 pin.
+	Lepton's MISO pin should be connected to RasPI's MISO pin.
+	Lepton's CLK pin should be connected to RasPI's SCLK pin.
+	Lepton's VIN pin should be connected to RasPI's 3v3 pin.
+	Lepton's SDA pin should be connected to RasPI's SDA pin.
+	Lepton's SCL pin should be connected to RasPI's SCL pin.
+More info here: 
+>>> Raspberry PI B+ pinout: 
+	https://learn.adafruit.com/system/assets/assets/000/017/942/medium800/raspberry_pi_GPIOs.png?1405284795
+>>> Lepton breakout board pinout:
+	http://www.pureengineering.com/projects/lepton
+
+Step 2. Now, follow these steps:
+> cd into ./IR_raspberry_server/Build
+> run the command ./LeptonServer
