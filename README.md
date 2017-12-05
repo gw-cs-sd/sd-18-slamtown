@@ -1,7 +1,7 @@
-# GW CS Senior Design Project Template
+This directory contains source files for controlling the arduino motors.
 
-Use the master branch of this repository for your **working** code.  You should use the [Feature Branch](https://www.atlassian.com/git/tutorials/comparing-workflows/feature-branch-workflow) or [Git Flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) structure for your code and branches.
+In this directory is the motorControl arduino sketch folder. This folder contains one source file which
+receives input the windows machine and moves to the orientation requested. It requires the standard arduino servo library.
 
-The gh-pages branch of this repository has starter files for your web page. You should upload PDF versions of all your assignments and keep your web page up to date.
-
-**Once you understand the structure listed above, you should replace this readme with something specific to your project.**
+The other source file is arduinoCommands.py which contains a very simple implementation of message sending using the pySerial library.
+It sends a user input char over the COM4 port which in turn moves the pan and tilt bracket holding the kinect using the motorControl sketch.
