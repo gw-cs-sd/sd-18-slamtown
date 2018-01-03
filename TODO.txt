@@ -1,6 +1,7 @@
-Add sources for client/server code (bogotobogo)
-host on windows and client on raspberry pi
+Currently, the server will send a test picture in the directory to the client and the client will save it as the date and time it was received. 
 
-- note, in practice raspberry pi may connect directly to
-up board, and up board will act as the client. This is okay,
-both will use same python script. 
+Functionality changes to make:
+
+-Currently, the connection will close when the image is sent. Instead, the server should wait until the next IMG_REQ.
+
+-The client should connect to the local.pi hostname if possible.
