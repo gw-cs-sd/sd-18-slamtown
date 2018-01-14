@@ -16,4 +16,4 @@ Then, start the client (python 2, uses opencv python build)
 python thermal_client.py
 
 The client and server should write to std err to display if they are working correctly. The size of the thermal image being sent to the client
-will be written in bytes as well as how much has been received thus far. The image should be written into the client/Images directory and then displayed in a window on the client. Press any key to continue the sample program. This text will be written to a seperate file in the future.
+will be written in bytes as well as how much has been received thus far. The image should be written into the client/Images directory and then displayed in a window on the client. Press any key to continue the sample program. This test will be written to a seperate file in the future.
