@@ -61,7 +61,9 @@ class ThermalClient:
         sys.stderr.write("Session Closed\n")
         chunk = self.clientsock.recv(16)
 
-myClient = ThermalClient('192.168.0.122', 22222)
-myClient.ImageRequest()
-myClient.Close()
+
+#raspiIP = socket.gethostbyname('raspberrypi')
+#myClient = ThermalClient(raspiIP,22222)
+#myClient.ImageRequest()
+#myClient.Close()
 

@@ -2,6 +2,9 @@ import socket
 import sys
 import numpy as np
 import cv2
+import socket
+import fcntl
+import struct
 from pylepton.Lepton3 import Lepton3
 
 
@@ -15,9 +18,19 @@ def capture(flip_v = False, device = "/dev/spidev0.0"):
   np.right_shift(a, 8, a)
   return np.uint8(a)
 
+#get my local ip address of ethernet (eth0) interface
+def get_ip_address(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
+myIP = get_ip_address('eth0')
 serversock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-sys.stderr.write("starting on port 22222\n")
-serversock.bind(('192.168.0.122',22222))
+sys.stderr.write("starting on address {0} port 22222\n".format(myIP))
+serversock.bind((myIP,22222))
 serversock.listen(1)
 while True:
     while True:
