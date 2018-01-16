@@ -1,7 +1,1 @@
-Currently, the server will send a test picture in the directory to the client and the client will save it as the date and time it was received. 
-
-Functionality changes to make:
-
--Currently, the connection will close when the image is sent. Instead, the server should wait until the next IMG_REQ.
-
--The client should connect to the local.pi hostname if possible.
+proper test file seperate from the main server and client classes in /test. Static ip for raspi would be nice : 0
