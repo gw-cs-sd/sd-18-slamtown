@@ -16,7 +16,7 @@ class ThermalClient:
             sys.stderr.write("No OK to HELO\n")
             self.clientsock.close
 
-    def ImageRequest(self):
+    def ImageRequest(self, display, save):
         sys.stderr.write("Sending Image Request\n")
         self.clientsock.sendall('IMGREQ'.encode('utf-8'))
         chunk = self.clientsock.recv(16)
@@ -44,17 +44,18 @@ class ThermalClient:
         img_data = b''.join(chunks) 
 
         #img_data = clientsock.recv(int(img_size))
-
-        sys.stderr.write("received all the img data. converting to file...\n")
-        filename = str(datetime.now().strftime('Images/%m%d%H%M%S')) + '.png'
-        myfile = open(filename, 'wb')
-        myfile.write(img_data)
-        myfile.close()
-        cv2.namedWindow('image', cv2.WINDOW_NORMAL)
-        img = cv2.imread(filename,0)
-        cv2.imshow('image',img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        if(save == True):
+            sys.stderr.write("received all the img data. converting to file...\n")
+            filename = str(datetime.now().strftime('Images/%m%d%H%M%S')) + '.png'
+            myfile = open(filename, 'wb')
+            myfile.write(img_data)
+            myfile.close()
+        if(display == True):
+            cv2.namedWindow('image', cv2.WINDOW_NORMAL)
+            img = cv2.imread(filename,0)
+            cv2.imshow('image',img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
 
     def Close(self):
         self.clientsock.sendall('QUIT'.encode('utf-8'))
@@ -62,8 +63,9 @@ class ThermalClient:
         chunk = self.clientsock.recv(16)
 
 
-#raspiIP = socket.gethostbyname('raspberrypi')
-#myClient = ThermalClient(raspiIP,22222)
-#myClient.ImageRequest()
-#myClient.Close()
+raspiIP = socket.gethostbyname('raspberrypi')
+myClient = ThermalClient(raspiIP,22222)
+for beef in range (0,10):
+    myClient.ImageRequest(display = True, save = False)
+myClient.Close()
 

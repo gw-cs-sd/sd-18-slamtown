@@ -1,5 +1,7 @@
 #include <Servo.h>
 
+//attach tilt servo to shield servo pins 1 and pan servo to shield pins 2. Black wire facing hole/usb input.
+
 Servo pan;  
 Servo tilt;
 
