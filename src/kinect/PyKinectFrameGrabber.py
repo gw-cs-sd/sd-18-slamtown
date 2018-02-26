@@ -1,6 +1,7 @@
 from pykinect2 import PyKinectV2
 from pykinect2.PyKinectV2 import *
 from pykinect2 import PyKinectRuntime
+from datetime import datetime
 import numpy
 import cv2
 
@@ -22,7 +23,8 @@ class KinectGrabber:
 			cv2.imshow('KINECT Image Stream', frame)
 
 		if(save == True):
-			cv2.imwrite("test.png", frame)
+			filename = str(datetime.now().strftime('Color_Images/%m%d%H%M%S')) + '.png'
+			cv2.imwrite(filename, frame)
 
 		while True:
 
@@ -33,7 +35,7 @@ class KinectGrabber:
 		self.kinect.close()
 		cv2.destroyAllWindows()
 
-mykinect = KinectGrabber()
-mykinect.ColorRequest(display = True, save = True)
-mykinect.Close()
+#mykinect = KinectGrabber()
+#mykinect.ColorRequest(display = True, save = True)
+#mykinect.Close()
 

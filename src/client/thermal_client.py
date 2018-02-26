@@ -23,12 +23,10 @@ class ThermalClient:
         if chunk.decode('utf-8') != "OK":
             sys.stderr.write("No OK to IMG REQ\n")
             self.clientsock.close
-
         self.clientsock.sendall('SIZE'.encode('utf-8'))
         img_size = self.clientsock.recv(32).decode('utf-8')
         self.clientsock.sendall('OK'.encode('utf-8')) 
         print(img_size)
-
         chunks = []
         bytes_received = 0
         while bytes_received < int(img_size):
@@ -42,14 +40,13 @@ class ThermalClient:
             print(bytes_received)
             print(int(img_size) - bytes_received)
         img_data = b''.join(chunks) 
-
         #img_data = clientsock.recv(int(img_size))
-        if(save == True):
-            sys.stderr.write("received all the img data. converting to file...\n")
-            filename = str(datetime.now().strftime('Images/%m%d%H%M%S')) + '.png'
-            myfile = open(filename, 'wb')
-            myfile.write(img_data)
-            myfile.close()
+        #if(save == True):
+        sys.stderr.write("received all the img data. converting to file...\n")
+        filename = str(datetime.now().strftime('Thermal_Images/%m%d%H%M%S')) + '.png'
+        myfile = open(filename, 'wb')
+        myfile.write(img_data)
+        myfile.close()
         if(display == True):
             cv2.namedWindow('image', cv2.WINDOW_NORMAL)
             img = cv2.imread(filename,0)
@@ -63,9 +60,9 @@ class ThermalClient:
         chunk = self.clientsock.recv(16)
 
 
-raspiIP = socket.gethostbyname('raspberrypi')
-myClient = ThermalClient(raspiIP,22222)
-for beef in range (0,10):
-    myClient.ImageRequest(display = True, save = False)
-myClient.Close()
+#raspiIP = socket.gethostbyname('raspberrypi')
+#myClient = ThermalClient(raspiIP,22222)
+#for beef in range (0,10):
+#    myClient.ImageRequest(display = True, save = False)
+#myClient.Close()
 

@@ -39,6 +39,8 @@ if __name__ == '__main__':
 
     hog = cv.HOGDescriptor()
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
+    
+
 
     default = ['../data/basketball2.png '] if len(sys.argv[1:]) == 0 else []
 
@@ -53,7 +55,7 @@ if __name__ == '__main__':
             print('loading error')
             continue
 
-        found, w = hog.detectMultiScale(img, winStride=(8,8), padding=(32,32), scale=1.05)
+        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
         found_filtered = []
         for ri, r in enumerate(found):
             for qi, q in enumerate(found):
