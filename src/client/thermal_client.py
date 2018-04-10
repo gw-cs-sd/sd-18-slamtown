@@ -16,7 +16,7 @@ class ThermalClient:
             sys.stderr.write("No OK to HELO\n")
             self.clientsock.close
 
-    def ImageRequest(self, display, save):
+    def ImageRequest(self, display):
         sys.stderr.write("Sending Image Request\n")
         self.clientsock.sendall('IMGREQ'.encode('utf-8'))
         chunk = self.clientsock.recv(16)
@@ -40,10 +40,8 @@ class ThermalClient:
             print(bytes_received)
             print(int(img_size) - bytes_received)
         img_data = b''.join(chunks) 
-        #img_data = clientsock.recv(int(img_size))
-        #if(save == True):
         sys.stderr.write("received all the img data. converting to file...\n")
-        filename = str(datetime.now().strftime('Thermal_Images/%m%d%H%M%S')) + '.png'
+        filename = str(datetime.now().strftime('Thermal_Images/%H.%M.%S.%f')[:-3]) + '.png'
         myfile = open(filename, 'wb')
         myfile.write(img_data)
         myfile.close()
@@ -53,6 +51,7 @@ class ThermalClient:
             cv2.imshow('image',img)
             cv2.waitKey(0)
             cv2.destroyAllWindows()
+        return filename
 
     def Close(self):
         self.clientsock.sendall('QUIT'.encode('utf-8'))
