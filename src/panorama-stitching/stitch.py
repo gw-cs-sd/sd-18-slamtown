@@ -17,24 +17,28 @@ ap.add_argument("--3", required=True,
  	help="path to the first image, second row")
 ap.add_argument("--4", required=True,
 	help="path to the second image, second row")
-# ap.add_argument("--21", required=True,
-# 	help="path to the first image, second row")
-# ap.add_argument("--22", required=True,
-# 	help="path to the second image, second row")
-# ap.add_argument("--23", required=True,
-# 	help="path to the third image, second row")
-# ap.add_argument("--24", required=True,
-# 	help="path to the fourth image, second row")
+ap.add_argument("--5", required=True,
+	help="path to the first image, second row")
+ap.add_argument("--6", required=True,
+	help="path to the second image, second row")
+ap.add_argument("--7", required=True,
+	help="path to the third image, second row")
+ap.add_argument("--8", required=True,
+	help="path to the fourth image, second row")
 
 args = vars(ap.parse_args())
 
-image1 = cv2.imread(args["1"])
-image2 = cv2.imread(args["2"])
-image3 = cv2.imread(args["3"])
-image4 = cv2.imread(args["4"])
+color1 = cv2.imread(args["1"])
+color2 = cv2.imread(args["2"])
+color3 = cv2.imread(args["3"])
+color4 = cv2.imread(args["4"])
+thermal1 = cv2.imread(args["5"])
+thermal2 = cv2.imread(args["6"])
+thermal3 = cv2.imread(args["7"])
+thermal4 = cv2.imread(args["8"])
 
 stitcher = Stitcher()
-stitcher.panorama(image1, image2, image3, image4)
+stitcher.panorama(color1, color2, color3, color4, thermal1, thermal2, thermal3, thermal4)
 # image2_1 = cv2.imread(args["21"])
 # image2_2 = cv2.imread(args["22"])
 # image2_3 = cv2.imread(args["23"])

@@ -12,28 +12,34 @@ class Stitcher:
 		# determine if we are using OpenCV v3.X
 		self.isv3 = imutils.is_cv3()
 
-	def panorama(self, image1, image2, image3, image4):
-		image1=imutils.resize(image1, width=400)
-		image2=imutils.resize(image2, width=400)
-		image3=imutils.resize(image3, width=400)
-		image4=imutils.resize(image4, width=400)
+	def panorama(self, color1, color2, color3, color4, thermal1, thermal2, thermal3, thermal4):
+		color1=imutils.resize(color1, width=400)
+		color2=imutils.resize(color2, width=400)
+		color3=imutils.resize(color3, width=400)
+		color4=imutils.resize(color4, width=400)
+		thermal1=imutils.resize(thermal1, width=400)
+		thermal2=imutils.resize(thermal2, width=400)
+		thermal3=imutils.resize(thermal3, width=400)
+		thermal4=imutils.resize(thermal4, width=400)
 
 		stitcher = Stitcher()
-		(PanTop) = stitcher.stitch([image1, image2], right=True)
-		(PanBottom) = stitcher.stitch([image3, image4], right=True)
-		(PanFull) = stitcher.stitch([PanTop, PanBottom], down=True)
+		(ColorPanTop, ThermalPanTop) = stitcher.stitch([color1, color2, thermal1, thermal2], right=True)
+		(ColorPanBottom, ThermalPanBottom) = stitcher.stitch([color3, color4, thermal3, thermal4], right=True)
+		(ColorPanFull, ThermalPanFull) = stitcher.stitch([ColorPanTop, ColorPanBottom, ThermalPanTop, ThermalPanBottom], down=True)
 
-		cv2.imshow("PanTop", PanTop)
-		cv2.imshow("PanBottom", PanBottom)
-		cv2.imshow("PanFull", PanFull)
+		cv2.imshow("ColorPanTop", ColorPanTop)
+		cv2.imshow("ThermalPanTop", ThermalPanTop)
+		cv2.imshow("ColorPanBottom", ColorPanBottom)
+		cv2.imshow("ColorPanFull", ColorPanFull)
+		cv2.imshow("ThermalPanFull", ThermalPanFull)
 
 	def stitch(self, images, ratio=0.75, reprojThresh=4.0,
 		showMatches=False, left = False, right = False, down = False):
 		# unpack the images, then detect keypoints and extract
 		# local invariant descriptors from them
-		(imageB, imageA) = images
-		(kpsA, featuresA) = self.detectAndDescribe(imageA)
-		(kpsB, featuresB) = self.detectAndDescribe(imageB)
+		(colorB, colorA, thermalB, thermalA) = images
+		(kpsA, featuresA) = self.detectAndDescribe(colorA)
+		(kpsB, featuresB) = self.detectAndDescribe(colorB)
 
 		# match features between the  two images
 		M = self.matchKeypoints(kpsA, kpsB,
@@ -49,33 +55,45 @@ class Stitcher:
 		if left:
 			#warpPerspective's first input is the image to be warped, thus imageB.
 			#second is the homography matrix, and then the dimensions of the result
-			result = cv2.warpPerspective(imageB, H,
-				(imageA.shape[1] + imageB.shape[1], imageA.shape[0]))
 			#imageA is the base image, as in the one that is not altered
 			#Thus we set the second half of the image to just be the original imageA
 			#With the warped perspective it should match up close enough for a panorama
-			result[0:imageB.shape[0], imageB.shape[1]:(imageB.shape[1]*2)] = imageA
+			result = cv2.warpPerspective(colorB, H,
+				(colorA.shape[1] + colorB.shape[1], colorA.shape[0]))
+			result[0:colorB.shape[0], colorB.shape[1]:(colorB.shape[1]*2)] = colorA
+			#Now apply homography to stitch thermal
+			resultThermal = cv2.warpPerspective(thermalB, H,
+				thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0])
+			resultThermal[0:thermalB.shape[0], thermalB.shape[1]:(thermalB.shape[1]*2)] = thermalA
 		#right stitching, meaning that the image on the right side is warped
 		elif right:
-			result = cv2.warpPerspective(imageA, H,
-				(imageA.shape[1] + imageB.shape[1], imageA.shape[0]))
-			result[0:imageB.shape[0], 0:imageB.shape[1]] = imageB
-			#down stitching, meaning that the lower image is warped
+			result = cv2.warpPerspective(colorA, H,
+				(colorA.shape[1] + colorB.shape[1], colorA.shape[0]))
+			result[0:colorB.shape[0], 0:colorB.shape[1]] = colorB
+
+			resultThermal = cv2.warpPerspective(thermalA, H, 
+				(thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0]))
+			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
+		#down stitching, meaning that the lower image is warped
 		elif down:
-			result = cv2.warpPerspective(imageA, H,
-				(imageA.shape[1], imageA.shape[0] + imageB.shape[0]))
-			result[0:imageB.shape[0], 0:imageB.shape[1]] = imageB
+			result = cv2.warpPerspective(colorA, H,
+				(colorA.shape[1], colorA.shape[0] + colorB.shape[0]))
+			result[0:colorB.shape[0], 0:colorB.shape[1]] = colorB
+
+			resultThermal = cv2.warpPerspective(thermalA, H,
+				(thermalA.shape[1], thermalA.shape[0] + thermalB.shape[0]))
+			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
 
 		# mostly for visualization/sanity check, visualize keypoint matches
 		if showMatches:
-			vis = self.drawMatches(imageB, imageA, kpsB, kpsA, matches,
+			vis = self.drawMatches(colorB, colorA, kpsB, kpsA, matches,
 				status)
 
 			# return a tuple of the stitched image and the visualization
-			return (result, vis)
+			return (result, resultThermal, vis)
 
 		# return the stitched image
-		return result
+		return (result, resultThermal)
 
 	def detectAndDescribe(self, image):
 		# convert the image to grayscale
