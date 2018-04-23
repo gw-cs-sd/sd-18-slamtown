@@ -35,6 +35,12 @@ def hog(img):
     #hog = cv.HOGDescriptor()
     hog = cv.HOGDescriptor("ML/hog.xml")        #load parameters
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
+    '''svm = cv.ml.SVM_load('ML/svm.dat')
+    svmvec = svm.getSupportVectors()
+    rho = -svm.getDecisionFunction(0)[0]
+    svmvec = np.append(svmvec, rho)
+    hog.setSVMDetector(svmvec)'''
+
     found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
     found_filtered = []
     for ri, r in enumerate(found):

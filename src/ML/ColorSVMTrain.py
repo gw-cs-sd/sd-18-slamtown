@@ -131,6 +131,7 @@ svm.save('svm_data.dat')
 svmvec = svm.getSupportVectors()
 rho = -svm.getDecisionFunction(0)[0]
 svmvec = np.append(svmvec, rho)
+'''
 print (svmvec)
 b = svmvec[None]
 b = b.T
@@ -142,6 +143,7 @@ for x in np.nditer(c, op_flags=['readwrite']):
 #to compare support vectors to default, save to file
 np.savetxt('customSV.out', c, delimiter=',')   # X is an array
 np.savetxt('defaultSV.out', defaultdetector, delimiter=',')   # X is an array
+'''
 hog.setSVMDetector(svmvec)
 
 
