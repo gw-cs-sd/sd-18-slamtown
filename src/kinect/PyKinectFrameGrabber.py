@@ -26,6 +26,7 @@ class KinectGrabber:
 
 		filename = str(datetime.now().strftime('Color_Images/%H.%M.%S.%f')[:-3]) + '.png'
 		cv2.imwrite(filename, frame)
+		
 
 		while True:
 			cv2.waitKey()

@@ -7,7 +7,7 @@ Servo tilt;
 
 int panpos = 0;        // variable to store the servo position
 int tiltpos = 0;
-int delayspeed = 2;   //the delay is required for the servos to move properly. I would recommend not
+int delayspeed = 1;   //the delay is required for the servos to move properly. I would recommend not
                       // going below 4-5 ms 
 
 void setup() {
@@ -82,7 +82,7 @@ void loop() {
   if(Serial.available() > 0){ //read input position from windows machine and move
       int pos = Serial.read()- '0';   //convert byte to integer
       move(pos);
-      delay(800);
+      delay(1000);
       Serial.print(pos); //printing a line acts as pseudo ack
     }
     

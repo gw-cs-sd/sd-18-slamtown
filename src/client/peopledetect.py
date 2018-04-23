@@ -9,8 +9,8 @@ Usage:
 Press any key to continue, ESC to stop.
 '''
 
-# Python 2/3 compatibility
-#from __future__ import print_function
+#Python 2/3 compatibility
+from __future__ import print_function
 
 import numpy as np
 import cv2 as cv
@@ -55,7 +55,7 @@ if __name__ == '__main__':
             print('loading error')
             continue
 
-        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
+        found, w = hog.detectMultiScale(img, winStride=(8,8), padding=(32,32), scale=1.05)
         found_filtered = []
         for ri, r in enumerate(found):
             for qi, q in enumerate(found):

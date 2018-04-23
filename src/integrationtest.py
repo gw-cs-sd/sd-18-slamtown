@@ -1,12 +1,14 @@
 from __future__ import print_function
 from kinect.PyKinectFrameGrabber import KinectGrabber
 from client.thermal_client import ThermalClient
+from panorama_stitching.panorama import Stitcher
 import socket
 import serial
 import msvcrt
 import sys
 import time
 import os
+from datetime import datetime
 # Python 2/3 compatibility
 
 import numpy as np
@@ -29,23 +31,10 @@ def draw_detections(img, rects, thickness = 1):
         pad_w, pad_h = int(0.15*w), int(0.05*h)
         cv.rectangle(img, (x+pad_w, y+pad_h), (x+w-pad_w, y+h-pad_h), (0, 255, 0), thickness)
 
-def hog(tryimage):
-    hog = cv.HOGDescriptor()
+def hog(img):
+    #hog = cv.HOGDescriptor()
+    hog = cv.HOGDescriptor("ML/hog.xml")        #load parameters
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
-    
-
-
-    #default = ['../data/basketball2.png '] if tryimage == 0 else []
-
-    try:
-        img = cv.imread(tryimage)
-        if img is None:
-            print('Failed to load image file:', tryimage)
-            return
-    except:
-        print('loading error')
-        return
-
     found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
     found_filtered = []
     for ri, r in enumerate(found):
@@ -91,6 +80,9 @@ while True:                                 #read char, if not i (current positi
 
 #print "starting main loop\n"
 time.sleep(1)
+colorimages = []
+thermalimages = []
+stitcher = Stitcher()
 for i in range (0,4):
     ser.write(bytes(i))                         #encode and send as byte                              
     while True:                                 #read char, if not i (current position) read another until at right spot
@@ -104,16 +96,28 @@ for i in range (0,4):
     colorimg = colorimg[100:980, 273:1647]
     colorimg = cv.flip( colorimg, 1 )
     cv.imwrite(colorfile, colorimg)
-    #cv.imshow("color", colorimg)
-    #cv.waitKey(0)
-    #hog(colorfile)
+    colorimages.append(colorimg)
     thermalfile = myClient.ImageRequest(display = False)
     thermalimg = cv.imread(thermalfile)
     height, width = colorimg.shape[:2]
     thermalimg = cv.resize(thermalimg,(width, height), interpolation = cv.INTER_LINEAR)
     cv.imwrite(thermalfile, thermalimg)
-    #cv.imshow("thermal", thermalimg)
-    #cv.waitKey(0)
+    thermalimages.append(thermalimg)
+
+for i in range (0, 4):
+    print (colorimages[i].shape)
+    #cv.imshow("theral image " + str(i), thermalimages[i])
+    #cv.imshow("color image " + str(i), colorimages[i])
+
+stitcher = Stitcher()
+(colorpan, thermalpan) = stitcher.panorama(colorimages[2],colorimages[3],colorimages[1],colorimages[0],thermalimages[2],thermalimages[3],thermalimages[1],thermalimages[0] )
+cv.imwrite(str(datetime.now().strftime('Panorama_Images/%H.%M.%S.%f')[:-3]) + '.png', colorpan)
+#cv.imshow("color beef",colorpan)
+hog(colorpan)
+#cv.imshow("thermal beef",thermalpan)
+hog(thermalpan)
+cv.waitKey(0)
 ser.close()
 myClient.Close()
 myKinect.Close()
+
