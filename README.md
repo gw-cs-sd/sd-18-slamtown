@@ -74,6 +74,9 @@ For PyKinect2
 `pip install comtypes`
 For PyKinect2
 
+`pip install numpy`
+For various things
+
 `pip install imutils`
 Used for image reshaping
 
