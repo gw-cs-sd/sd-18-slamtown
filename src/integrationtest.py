@@ -32,7 +32,8 @@ def draw_detections(img, rects, thickness = 1):
         cv.rectangle(img, (x+pad_w, y+pad_h), (x+w-pad_w, y+h-pad_h), (0, 255, 0), thickness)
 
 def hog(img, imagetype):
-    found, w
+    found = []
+    w = []
     if imagetype == 0:
         hog = cv.HOGDescriptor("ML/Thermalhog.xml")        #load parameters
         svm = cv.ml.SVM_load('ML/Thermalsvm_data.dat')
@@ -40,15 +41,15 @@ def hog(img, imagetype):
         rho = -svm.getDecisionFunction(0)[0]
         svmvec = np.append(svmvec, rho)
         hog.setSVMDetector(svmvec)
-        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
-    if imagetype == 1:
+        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(8,8), scale=1.05, finalThreshold=9)
+    elif imagetype == 1:
         hog = cv.HOGDescriptor("ML/Colorhog.xml")        #load parameters
         svm = cv.ml.SVM_load('ML/Colorsvm_data.dat')
         svmvec = svm.getSupportVectors()
         rho = -svm.getDecisionFunction(0)[0]
         svmvec = np.append(svmvec, rho)
         hog.setSVMDetector(svmvec)
-        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
+        found, w = hog.detectMultiScale(img, winStride=(32,32), padding=(32,32), scale=1.05)
     else:
         print("invalid image type. error")
         return

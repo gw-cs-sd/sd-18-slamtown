@@ -147,8 +147,8 @@ hog.setSVMDetector(svmvec)
 
 
 #test multiscale on an image in the ML directory
-testimg = cv2.imread('testimgT1.png', 0)
-found, w = hog.detectMultiScale(testimg, winStride=(32,32), padding=(8,8), scale=1.05, finalThreshold=8)
+testimg = cv2.imread('thermalstitch.png', 0)
+found, w = hog.detectMultiScale(testimg, winStride=(16,16), padding=(8,8), scale=1.05, finalThreshold=9)
 
 
 found_filtered = []

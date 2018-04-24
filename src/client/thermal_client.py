@@ -59,9 +59,9 @@ class ThermalClient:
         chunk = self.clientsock.recv(16)
 
 
-#raspiIP = socket.gethostbyname('raspberrypi')
-#myClient = ThermalClient(raspiIP,22222)
-#for beef in range (0,10):
-#    myClient.ImageRequest(display = True, save = False)
-#myClient.Close()
+raspiIP = socket.gethostbyname('raspberrypi')
+myClient = ThermalClient(raspiIP,22222)
+for i in range (0,10):
+    myClient.ImageRequest(display = True)
+myClient.Close()
 
