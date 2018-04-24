@@ -3,9 +3,10 @@ import numpy as np
 import imutils
 import cv2
 
-#Assuming 2x4 grid of images, scan given directory for appropriate images. Images are organized with a date and a row_column identifier. For example, 2018_03_12_1_3 for
-#the 3rd image in the first row. Perform left stitches on the first and second images of both rows, and right stitches on the third and fourth images as well. This is explained 
-#further in the readme. Finally, stitch together  bottom and stop rows using downward stitching.
+#Assuming 2x2 grid of images, take input in order of 4 color images and 4 thermal images
+#We stitch together the top and bottom rows, then the results of those 2 together
+#Additionally, we apply the same homography from the color to the thermal
+#This is explained in more detail below and in the readme
 
 class Stitcher:
 	def __init__(self):
@@ -27,12 +28,6 @@ class Stitcher:
 		(ColorPanBottom, ThermalPanBottom) = stitcher.stitch([color3, color4, thermal3, thermal4], right=True)
 		(ColorPanFull, ThermalPanFull) = stitcher.stitch([ColorPanTop, ColorPanBottom, ThermalPanTop, ThermalPanBottom], down=True)
 
-		#cv2.imshow("ColorPanTop", ColorPanTop)
-		#cv2.imshow("ThermalPanTop", ThermalPanTop)
-		#cv2.imshow("ColorPanBottom", ColorPanBottom)
-		#cv2.imshow("ColorPanFull", ColorPanFull)
-		#cv2.imshow("ThermalPanFull", ThermalPanFull)
-
 		return (ColorPanFull, ThermalPanFull)
 
 	def stitch(self, images, ratio=0.75, reprojThresh=4.0,
@@ -40,6 +35,7 @@ class Stitcher:
 		# unpack the images, then detect keypoints and extract
 		# local invariant descriptors from them
 		(colorB, colorA, thermalB, thermalA) = images
+		# We only need to extract descriptors from color since we are using the same homoraphy
 		(kpsA, featuresA) = self.detectAndDescribe(colorA)
 		(kpsB, featuresB) = self.detectAndDescribe(colorB)
 
@@ -53,21 +49,18 @@ class Stitcher:
 
 		# otherwise, apply a perspective warp to stitch the images together
 		(matches, H, status) = M
-		#left stitching, meaning that the image on the left side is warped
+		# Image on the left side is warped
 		if left:
-			#warpPerspective's first input is the image to be warped, thus imageB.
-			#second is the homography matrix, and then the dimensions of the result
-			#imageA is the base image, as in the one that is not altered
-			#Thus we set the second half of the image to just be the original imageA
-			#With the warped perspective it should match up close enough for a panorama
+			# warpPerspective's first input is the image to be warped, thus imageB.
+			# second is the homography matrix, and then the dimensions of the result
 			result = cv2.warpPerspective(colorB, H,
 				(colorA.shape[1] + colorB.shape[1], colorA.shape[0]))
 			result[0:colorB.shape[0], colorB.shape[1]:(colorB.shape[1]*2)] = colorA
-			#Now apply homography to stitch thermal
+			# Now apply same homography to stitch thermal
 			resultThermal = cv2.warpPerspective(thermalB, H,
 				thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0])
 			resultThermal[0:thermalB.shape[0], thermalB.shape[1]:(thermalB.shape[1]*2)] = thermalA
-		#right stitching, meaning that the image on the right side is warped
+		# Image on the right side is warped (Primarily used)
 		elif right:
 			result = cv2.warpPerspective(colorA, H,
 				(colorA.shape[1] + colorB.shape[1], colorA.shape[0]))
@@ -76,7 +69,7 @@ class Stitcher:
 			resultThermal = cv2.warpPerspective(thermalA, H, 
 				(thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0]))
 			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
-		#down stitching, meaning that the lower image is warped
+		# Image on the lower side is warped
 		elif down:
 			result = cv2.warpPerspective(colorA, H,
 				(colorA.shape[1], colorA.shape[0] + colorB.shape[0]))
@@ -86,36 +79,25 @@ class Stitcher:
 				(thermalA.shape[1], thermalA.shape[0] + thermalB.shape[0]))
 			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
 
-		# mostly for visualization/sanity check, visualize keypoint matches
+		# Mostly for visualization/sanity check, visualize keypoint matches
 		if showMatches:
 			vis = self.drawMatches(colorB, colorA, kpsB, kpsA, matches,
 				status)
 
-			# return a tuple of the stitched image and the visualization
+			# Return a tuple of the stitched image and the visualization
 			return (result, resultThermal, vis)
 
-		# return the stitched image
+		# Otherwise just return the stitched images
 		return (result, resultThermal)
 
 	def detectAndDescribe(self, image):
-		# convert the image to grayscale
+		# Convert the image to grayscale
 		gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-		# check to see if we are using OpenCV 3.X
-		if self.isv3:
-			# detect and extract features from the image
-			descriptor = cv2.xfeatures2d.SIFT_create()
-			(kps, features) = descriptor.detectAndCompute(image, None)
-
-		# otherwise, we are using OpenCV 2.4.X
-		else:
-			# detect keypoints in the image
-			detector = cv2.FeatureDetector_create("SIFT")
-			kps = detector.detect(gray)
-
-			# extract features from the image
-			extractor = cv2.DescriptorExtractor_create("SIFT")
-			(kps, features) = extractor.compute(gray, kps)
+		# Assuming that we are using OpenCV 3
+		# detect and extract features from the image
+		descriptor = cv2.xfeatures2d.SIFT_create()
+		(kps, features) = descriptor.detectAndCompute(image, None)
 
 		# convert the keypoints from KeyPoint objects to NumPy arrays
 		kps = np.float32([kp.pt for kp in kps])
