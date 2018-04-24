@@ -63,7 +63,7 @@ To test if the machine is correctly receiving images, install dependencies and r
 
 # Windows Machine Dependencies
 
-If you are using the same UP boad as us, then everything here should already be present
+If you are using the same UP board as us, then everything here should already be present
 
 ## Python 2.7 verion of 32-bit Anaconda
 [Download the 32-bit installer here](https://www.anaconda.com/download/)
