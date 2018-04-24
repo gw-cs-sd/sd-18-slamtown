@@ -34,20 +34,20 @@ https://pypi.python.org/pypi/opencv-python
 
 (if you are using the same pi as us (raspi 3) you shouldn't need to change config settings)
 
-*Change the raspi configuration settings to enable SPI, VNC, and SSH. Depending on what other sensors you are using
+* Change the raspi configuration settings to enable SPI, VNC, and SSH. Depending on what other sensors you are using
 you may need to enable I2C. 
 
-*Connect an ethernet cable from the Windows machine to the pi. NO CHANGES should need to be made to network preferences. 
+* Connect an ethernet cable from the Windows machine to the pi. NO CHANGES should need to be made to network preferences. 
 
-*Use `PING raspberrypi` on windows machine to ensure the hostname is resolvable on your pc.  
+* Use `PING raspberrypi` on windows machine to ensure the hostname is resolvable on your pc.  
 
-*Install VNC viewer on your windows machine. 
+* Install VNC viewer on your windows machine. 
 
-*Connect to the pi on VNC viewer using hostname: raspberrypi   password: None
+* Connect to the pi on VNC viewer using hostname: raspberrypi   password: None
 
 You can also use SSH instead of VNC viewer but VNC is useful if you need to make changes. 
 
-*On the pi, navigate to where the project has been cloned. install the necessary dependencies and run `python ~/projects/sd-18-slamtown/src/server/thermal_server.py`
+* On the pi, navigate to where the project has been cloned. install the necessary dependencies and run `python ~/projects/sd-18-slamtown/src/server/thermal_server.py`
 
 This should automatically configure a the local ip address of the pis eth0 interface and create the thermal image server on it. 
 
