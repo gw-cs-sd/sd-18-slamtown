@@ -60,16 +60,6 @@ class Stitcher:
 			resultThermal = cv2.warpPerspective(thermalB, H,
 				thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0])
 			resultThermal[0:thermalB.shape[0], thermalB.shape[1]:(thermalB.shape[1]*2)] = thermalA
-		# Image on the right side is warped (Primarily used)
-		elif right:
-			result = cv2.warpPerspective(colorA, H,
-				(colorA.shape[1] + colorB.shape[1], colorA.shape[0]))
-			result[0:colorB.shape[0], 0:colorB.shape[1]] = colorB
-
-			resultThermal = cv2.warpPerspective(thermalA, H, 
-				(thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0]))
-			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
-		# Image on the lower side is warped
 		elif down:
 			result = cv2.warpPerspective(colorA, H,
 				(colorA.shape[1], colorA.shape[0] + colorB.shape[0]))
@@ -78,7 +68,17 @@ class Stitcher:
 			resultThermal = cv2.warpPerspective(thermalA, H,
 				(thermalA.shape[1], thermalA.shape[0] + thermalB.shape[0]))
 			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
+		# Assume right if neither above is satisfied (primarily used)
+		else:
+			result = cv2.warpPerspective(colorA, H,
+				(colorA.shape[1] + colorB.shape[1], colorA.shape[0]))
+			result[0:colorB.shape[0], 0:colorB.shape[1]] = colorB
 
+			resultThermal = cv2.warpPerspective(thermalA, H, 
+				(thermalA.shape[1] + thermalB.shape[1], thermalA.shape[0]))
+			resultThermal[0:thermalB.shape[0], 0:thermalB.shape[1]] = thermalB
+		# Image on the lower side is warped
+		
 		# Mostly for visualization/sanity check, visualize keypoint matches
 		if showMatches:
 			vis = self.drawMatches(colorB, colorA, kpsB, kpsA, matches,

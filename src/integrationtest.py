@@ -43,6 +43,8 @@ def hog(img, imagetype):
         hog.setSVMDetector(svmvec)
         found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(8,8), scale=1.05, finalThreshold=9)
     elif imagetype == 1:
+        #hog = cv.HOGDescriptor()
+        #hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
         hog = cv.HOGDescriptor("ML/Colorhog.xml")        #load parameters
         svm = cv.ml.SVM_load('ML/Colorsvm_data.dat')
         svmvec = svm.getSupportVectors()
@@ -96,7 +98,6 @@ while True:                                 #read char, if not i (current positi
         if c == str(0):
             break
 
-#print "starting main loop\n"
 time.sleep(1)
 colorimages = []
 thermalimages = []
@@ -130,9 +131,9 @@ for i in range (0, 4):
 stitcher = Stitcher()
 (colorpan, thermalpan) = stitcher.panorama(colorimages[2],colorimages[3],colorimages[1],colorimages[0],thermalimages[2],thermalimages[3],thermalimages[1],thermalimages[0] )
 cv.imwrite(str(datetime.now().strftime('Panorama_Images/%H.%M.%S.%f')[:-3]) + '.png', colorpan)
-#cv.imshow("color beef",colorpan)
+#cv.imshow("color stitch",colorpan)
 hog(colorpan, 1)
-#cv.imshow("thermal beef",thermalpan)
+#cv.imshow("thermal stitch",thermalpan)
 hog(thermalpan, 0)
 cv.waitKey(0)
 ser.close()

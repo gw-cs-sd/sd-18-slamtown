@@ -36,8 +36,9 @@ class KinectGrabber:
 	def Close(self):
 		self.kinect.close()
 		cv2.destroyAllWindows()
-
-mykinect = KinectGrabber()
-mykinect.ColorRequest(display = True)
-mykinect.Close()
+		
+if __name__ == "__main__":
+	mykinect = KinectGrabber()
+	mykinect.ColorRequest(display = True)
+	mykinect.Close()
 
