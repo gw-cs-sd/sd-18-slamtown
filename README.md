@@ -78,13 +78,7 @@ For PyKinect2
 Used for image reshaping
 
 `pip install opencv-python`
-<<<<<<< HEAD
 `pip install opencv-contrib-python`
-=======
-
-`pip install opencv-contrib-python`
-
->>>>>>> integration
 This is required to allow usage of keypoint detectors SIFT and SURF which are utilized in panorama stitching, and were removed in OpenCV 3
 
 ## Kinect for Windows SDK 2.0
