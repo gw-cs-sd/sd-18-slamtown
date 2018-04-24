@@ -16,6 +16,7 @@ Our project has only been tested with Windows 8.1 and 10. If using Linux, see co
 
 ### Pylepton
 Use Lepton3 branch (or other if using a different sensor)
+
 [Github page](https://github.com/groupgets/pylepton)
 
 ### cv2 (opencv 3)
