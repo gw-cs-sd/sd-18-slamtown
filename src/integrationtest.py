@@ -43,14 +43,14 @@ def hog(img, imagetype):
         hog.setSVMDetector(svmvec)
         found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(8,8), scale=1.05, finalThreshold=9)
     elif imagetype == 1:
-        #hog = cv.HOGDescriptor()
-        #hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
-        hog = cv.HOGDescriptor("ML/Colorhog.xml")        #load parameters
+        hog = cv.HOGDescriptor()
+        hog.setSVMDetector(cv.HOGDescriptor_getDefaultPeopleDetector())
+        '''hog = cv.HOGDescriptor("ML/Colorhog.xml")        #load parameters
         svm = cv.ml.SVM_load('ML/Colorsvm_data.dat')
         svmvec = svm.getSupportVectors()
         rho = -svm.getDecisionFunction(0)[0]
         svmvec = np.append(svmvec, rho)
-        hog.setSVMDetector(svmvec)
+        hog.setSVMDetector(svmvec)'''
         found, w = hog.detectMultiScale(img, winStride=(32,32), padding=(32,32), scale=1.05)
     else:
         print("invalid image type. error")

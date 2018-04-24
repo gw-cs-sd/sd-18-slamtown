@@ -109,6 +109,8 @@ to the power/usb input.
 
 If you're using a laptop, you can probably get away with not using the shield as well as the external power. The servos typically aren't drawing as much power as they are capible of, so the USB could actually be enough. However, if you are using the UP board, the external power is very necessary, as it does not provide sufficient power.
 
+Then, you should compile and upload the motorcontroller/MotorControl.ino sketch to your arduino (requires the arduino ide). Take note of the com port if you are having issues (should be com4). You can use arduinocommands/arduinoCommands.py to test the motors are working properly by inputting numbers on the keyboard.
+
 
 
 Once everything is set up and connected, you should be able to run `python integrationtest.py` and have everything work. Feel free to send us an email if you have any questions!
