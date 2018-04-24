@@ -19,4 +19,5 @@ while True:
     c =  msvcrt.getch()                         #enter a char (0 through input 3) and send to arduino serial port
     #ser.write(bytes(str(c),'utf-8'))           #encode and send as byte
     ser.write(bytes(c))
+    print(ser.readline())
 ser.close()

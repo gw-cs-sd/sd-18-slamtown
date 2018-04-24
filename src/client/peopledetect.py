@@ -9,7 +9,7 @@ Usage:
 Press any key to continue, ESC to stop.
 '''
 
-# Python 2/3 compatibility
+#Python 2/3 compatibility
 from __future__ import print_function
 
 import numpy as np
@@ -39,6 +39,8 @@ if __name__ == '__main__':
 
     hog = cv.HOGDescriptor()
     hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
+    
+
 
     default = ['../data/basketball2.png '] if len(sys.argv[1:]) == 0 else []
 

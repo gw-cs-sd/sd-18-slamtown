@@ -1,3 +1,0 @@
-This folder contains images recently received from the thermal server. They are saved in the format
-"Images/%m%d%H%M%S" where m is month, d is day, h is hour, m is minute, and s is seconds a the moment
-the image was taken.
