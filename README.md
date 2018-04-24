@@ -106,6 +106,10 @@ If you're using a laptop, you can probably get away with not using the shield as
 
 
 
+Once everything is set up and connected, you should be able to run `python integrationtest.py` and have everything work. Feel free to send us an email if you have any questions!
+
+
+
 
 
 
