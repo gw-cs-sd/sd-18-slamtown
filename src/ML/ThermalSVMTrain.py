@@ -11,12 +11,11 @@ def inside(r, q):
     qx, qy, qw, qh = q
     return rx > qx and ry > qy and rx + rw < qx + qw and ry + rh < qy + qh
 
-
 def draw_detections(img, rects, thickness = 1):
     for x, y, w, h in rects:
         # the HOG detector returns slightly larger rectangles than the real objects.
         # so we slightly shrink the rectangles to get a nicer output.
-        pad_w, pad_h = int(0.15*w), int(0.05*h)
+        pad_w, pad_h = int(0.05*w), int(0.05*h)
         cv2.rectangle(img, (x+pad_w, y+pad_h), (x+w-pad_w, y+h-pad_h), (0, 255, 0), thickness)
 
 labels = []    
@@ -38,7 +37,7 @@ i = 0
 for filename in glob.glob(os.path.join(pospath, '*.png')):
     #print filename
     img = cv2.imread(filename, 0)
-    img = cv2.resize(img,(64, 128), interpolation = cv2.INTER_LINEAR)
+    img = cv2.resize(img,(64, 64), interpolation = cv2.INTER_LINEAR)
     hist = hog.compute(img)
     hist.ravel()
     samples.append(hist)
@@ -52,7 +51,7 @@ i = 0
 for filename in glob.glob(os.path.join(negpath, '*.png')):
     #print filename
     img = cv2.imread(filename, 0)
-    img = cv2.resize(img,(64, 128), interpolation = cv2.INTER_LINEAR)
+    img = cv2.resize(img,(64, 64), interpolation = cv2.INTER_LINEAR)
     hist = hog.compute(img)
     hist.ravel
     samples.append(hist)
@@ -148,9 +147,10 @@ hog.setSVMDetector(svmvec)
 
 
 #test multiscale on an image in the ML directory
-testimg = cv2.imread('thermalstitch.png', 0)
-found, w = hog.detectMultiScale(testimg, winStride=(16,16), padding=(8,8), scale=1.05, finalThreshold=1)
-print (w)
+testimg = cv2.imread('testimgT1.png', 0)
+found, w = hog.detectMultiScale(testimg, winStride=(32,32), padding=(8,8), scale=1.05, finalThreshold=8)
+
+
 found_filtered = []
 for ri, r in enumerate(found):
     for qi, q in enumerate(found):
@@ -160,7 +160,7 @@ for ri, r in enumerate(found):
         found_filtered.append(r)
 
 #draw_detections(testimg, found)
-draw_detections(testimg, found_filtered, 3)
+draw_detections(testimg, found_filtered, )
 print('%d (%d) found' % (len(found_filtered), len(found)))
 cv2.imshow('img', testimg)
 ch = cv2.waitKey()

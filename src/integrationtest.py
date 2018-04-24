@@ -31,17 +31,28 @@ def draw_detections(img, rects, thickness = 1):
         pad_w, pad_h = int(0.15*w), int(0.05*h)
         cv.rectangle(img, (x+pad_w, y+pad_h), (x+w-pad_w, y+h-pad_h), (0, 255, 0), thickness)
 
-def hog(img):
-    #hog = cv.HOGDescriptor()
-    hog = cv.HOGDescriptor("ML/hog.xml")        #load parameters
-    hog.setSVMDetector( cv.HOGDescriptor_getDefaultPeopleDetector() )
-    '''svm = cv.ml.SVM_load('ML/svm.dat')
-    svmvec = svm.getSupportVectors()
-    rho = -svm.getDecisionFunction(0)[0]
-    svmvec = np.append(svmvec, rho)
-    hog.setSVMDetector(svmvec)'''
+def hog(img, imagetype):
+    found, w
+    if imagetype == 0:
+        hog = cv.HOGDescriptor("ML/Thermalhog.xml")        #load parameters
+        svm = cv.ml.SVM_load('ML/Thermalsvm_data.dat')
+        svmvec = svm.getSupportVectors()
+        rho = -svm.getDecisionFunction(0)[0]
+        svmvec = np.append(svmvec, rho)
+        hog.setSVMDetector(svmvec)
+        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
+    if imagetype == 1:
+        hog = cv.HOGDescriptor("ML/Colorhog.xml")        #load parameters
+        svm = cv.ml.SVM_load('ML/Colorsvm_data.dat')
+        svmvec = svm.getSupportVectors()
+        rho = -svm.getDecisionFunction(0)[0]
+        svmvec = np.append(svmvec, rho)
+        hog.setSVMDetector(svmvec)
+        found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
+    else:
+        print("invalid image type. error")
+        return
 
-    found, w = hog.detectMultiScale(img, winStride=(16,16), padding=(32,32), scale=1.05)
     found_filtered = []
     for ri, r in enumerate(found):
         for qi, q in enumerate(found):
@@ -119,9 +130,9 @@ stitcher = Stitcher()
 (colorpan, thermalpan) = stitcher.panorama(colorimages[2],colorimages[3],colorimages[1],colorimages[0],thermalimages[2],thermalimages[3],thermalimages[1],thermalimages[0] )
 cv.imwrite(str(datetime.now().strftime('Panorama_Images/%H.%M.%S.%f')[:-3]) + '.png', colorpan)
 #cv.imshow("color beef",colorpan)
-hog(colorpan)
+hog(colorpan, 1)
 #cv.imshow("thermal beef",thermalpan)
-hog(thermalpan)
+hog(thermalpan, 0)
 cv.waitKey(0)
 ser.close()
 myClient.Close()
