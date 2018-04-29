@@ -30,6 +30,18 @@ a {
     text-decoration: none;
 }
 
+.column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+			
 #outer_div {
 	margin-right: 80px;
 	margin-left: 80px;
@@ -65,12 +77,20 @@ a {
 			<div id="middle_div">
 				<div class="subheader_div">
 					<h1>Team Slam Town: Distributed Climate Control</h1>
-					<figure>
+					<div class="row">
+  						<div class="column">
+    							<img src="images/dan.jpg" alt="Dan Coen" width="150">
+  						</div>
+  						<div class="column">
+    							<img src="images/me.jpg" alt="Conor Sheridan" width="150">
+  						</div>
+					</div>
+<!-- 					<figure>
  						<img src="images/dan.jpg" alt="Dan Coen" width="150">
   						<figcaption>Dan Coen</figcaption>
  						<img src="images/me.jpg" alt="Conor Sheridan" width="150">
   						<figcaption>Conor Sheridan</figcaption>
-					</figure>
+					</figure> -->
 				</div>
 				<div id="inside_div"> 
 					<p>
