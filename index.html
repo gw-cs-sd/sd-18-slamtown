@@ -30,6 +30,18 @@ a {
     text-decoration: none;
 }
 
+.column {
+    float: left;
+    width: 20.00%;
+    padding: 5px;
+}
+
+.row::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+			
 #outer_div {
 	margin-right: 80px;
 	margin-left: 80px;
@@ -52,11 +64,7 @@ a {
 	margin-left: 30px;
 }
 
-.subheader_div img {
-	margin-left: 50px;
-	position: relative;
-	float: right;
-}
+
 		</style>
 	</head>
 	<body>
@@ -68,50 +76,57 @@ a {
 		<div id="outer_div">
 			<div id="middle_div">
 				<div class="subheader_div">
-					<h2>Team Slam Town: Distributed Climate Control</h2>
-					<img src="images/headshot.jpg" width="150">
+					<h1>Team Coen-Sheridan: Distributed Climate Control</h1>
+					<img src="images/dcc.PNG" alt="DCC" width="600" style="margin:0px 100px" align = "right">
+					<div class="row">
+  						<div class="column">
+							<figure>
+    								<img src="images/dan.jpg" alt="Dan Coen" width="200">
+								<figcaption>Dan Coen</figcaption>
+							</figure>
+  						</div>
+  						<div class="column">
+							<figure>
+    								<img src="images/me.jpg" alt="Conor Sheridan" width="200">
+								<figcaption>Conor Sheridan</figcaption>
+							</figure>
+						</div>
+					</div>
+<!-- 					<figure>
+ 						<img src="images/dan.jpg" alt="Dan Coen" width="150">
+  						<figcaption>Dan Coen</figcaption>
+ 						<img src="images/me.jpg" alt="Conor Sheridan" width="150">
+  						<figcaption>Conor Sheridan</figcaption>
+					</figure> -->
 				</div>
 				<div id="inside_div"> 
-					<p>
+					<p><font size="4">
 						Welcome to the Distributed Climate Control (DCC) project. The purpose of this project is to provide an affordable solution
 to reduce energy usage from HVAC systems, which currently accounts for half of commercial and home
 energy costs in the US. Additionally, we want to contribute to global efforts towards creating affordable, sustainable energy technologies.
 Our system aims to provide accurate person detection by utilizing both color and 
 thermal data. Using this information, we can split up, or distribute, heating and cooling such that it 
-is provided only where needed. This project is part of continued research at George Washington University, and is
-inspired by the ARPA-E’s research and funding of advanced energy systems.
-					</p> 
+is provided only where needed. This project is part of continued research at George Washington University under Professor Simha and PhD candidate Andrei Claudiu Cosma, and is
+inspired by the ARPA-E’s research and funding of advanced energy systems. Please visit our <a href="https://github.com/gw-cs-sd/sd-18-slamtown">Github page</a> and take a look at our overview video below for 
+further information and documentation.
+					</font></p> 
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/HrM1mgjqmA4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 					<p>
-						<strong>Bio:</strong>
-						Two bitter rivals join forces to create a super machine. Daniel Coen and Conor Sheridan are: <b>SLAM TOWN</b>.
-					</p>
-					<p>
-						<strong>Documentation:</strong> 	
-						<p>
-						<a href="docs/Copy of writing1.pdf">Project Summary</a>
-						</p>
-						<p>
-						<a href="docs/writing2.pdf">Revision of Project Summary and Elevator Pitch Transcript</a>
-						</p>
-						<p>
-						<a href="docs/writing3.pdf">Revision of Elevator Pitch and Commercial/Social Benefit</a>
-						</p>
-						<p>
-						<a href="docs/Interface Spefications.pdf">Interface Specifications</a>
-						</p>
-						<p>
-						<a href="docs/writing4.pdf">SIBR Application</a>
-						</p>
-						<p>
-						<a href="docs/Final Design Document.pdf">Final Design Document</a>
-						</p>
-						<iframe 
-							width="420" 
-							height="315"
-							src="https://www.youtube.com/watch?v=HrM1mgjqmA4&feature=youtu.be" 
-							frameborder="0" 
-							allowfullscreen>
-						</iframe>
+						<strong><font size="4">Documentation:</font></strong> 	
+						<p><font size="4">
+							<a href="https://github.com/gw-cs-sd/sd-18-slamtown">Github Page</a><br>
+							<a href="docs/Copy of writing1.pdf">Project Summary</a><br>
+							<a href="docs/writing2.pdf">Revision of Project Summary and Elevator Pitch Transcript</a><br>
+							<a href="docs/writing3.pdf">Revision of Elevator Pitch and Commercial/Social Benefit</a><br>
+							<a href="docs/Interface Spefications.pdf">Interface Specifications</a><br>
+							<a href="docs/writing4.pdf">SIBR Application</a><br>
+							<a href="docs/Final Design Document.pdf">Final Design Document</a><br>
+						</p></font>
+						<p><font size="2">
+<!-- 						<strong><font size="4">Bio:</font></strong> -->
+						Conor and Dan were once 2 incredible devlopers who worked in tandem to set the foundation for the Distributed Climate Control Project. If you're reading this, they are no longer with us. They would want their research carried on.
+<!-- 						Two bitter rivals join forces to create a super machine. Daniel Coen and Conor Sheridan are: <b>SLAM TOWN</b>. -->
+						</p></font>
 					</p>
 				</div>
 			</div>
